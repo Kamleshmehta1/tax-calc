@@ -5,7 +5,8 @@ This project was bootstrapped with [DEMO](https://kamleshmehta1.github.io/tax-ca
 
 # Steps to follow :
 
-1) Enter the name of the product in the text box as shown in the figure.![Screenshot (518)](https://user-images.githubusercontent.com/81505652/189675746-75216671-03aa-4876-baf7-9b019defa8cd.png)
+1) Enter the name of the product in the text box as shown in the figure.![Screenshot (524)](https://user-images.githubusercontent.com/81505652/189678988-42167f42-9448-43fe-b787-47df7897dbdf.png)
+
 
 2) Enter the product price in second text box (Input should be digits only).
 ![Screenshot (519)](https://user-images.githubusercontent.com/81505652/189676115-4fc0ee78-895f-4e49-83b2-ade3fe8024e0.png)
