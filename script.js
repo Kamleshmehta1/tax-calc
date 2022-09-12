@@ -3,48 +3,56 @@
 // • Import duty is an additional tax applicable on all imported goods at a rate of 5%, with no
 // exemptions
 
-const form = document.querySelector(".form");
-const productName = document.querySelector(".product-name");
-const imported = document.querySelector(".imported");
-const productPrice = document.querySelector(".product-price");
-const dropDownItem = document.querySelector("#cars");
+const productName = document.querySelector(".prod");
+const imported = document.querySelector(".checkbox");
+const productPrice = document.querySelector(".price");
+const dropDownItem = document.querySelector("#item-value");
+let priceValue = 0;
+let totalInt = 0;
 
 let objData = {
-  books: [{ name: "harry", price: 30, imported: true }],
-  food: [{ name: "pizza", price: 300, imported: true }],
+  books: [],
+  food: [],
   medical: [],
   others: [],
 };
 
-let createTable = (itemList) => {
-  const list = document.querySelector("#book-list");
+function createTable() {
+  let mainData = JSON.parse(localStorage.getItem("data"));
+  let list = document.querySelector("#book-list");
+  list.innerHTML = "";
 
-  itemList.map(
-    (ele) =>
-      (list.innerHTML = `
-    <tr>
-  <td>${ele.name}</td>
-  <td>${ele.price}</td>
-  <td>${ele.imported}</td>
-  </tr>
-`)
-  );
-};
-
-let mainData = JSON.parse(localStorage.getItem("data"));
-
-for (let x in mainData) {
-  createTable(mainData[x]);
+  for (let itemList in mainData) {
+    let sum = 0;
+    if (mainData[itemList].length != 0) {
+      mainData[itemList].forEach((ele, index) => {
+        sum += ele.price;
+        let val = "element" + `${index}`;
+        val = document.createElement("tr");
+        val.innerHTML = `
+          <td>${ele.name}</td>
+          <td>${ele.price}</td>
+          <td>${ele.imported}</td>
+`;
+        list.appendChild(val);
+      });
+      let totalData = document.querySelector(".total-data");
+      totalData.innerHTML = `<h3>SALES TAX: ${totalInt}</h3><h3>TOTAL AMOUNT: ${sum}</h3>`;
+    }
+  }
 }
 
-const handleSubmit = (e) => {
-  if (dropDownItem.value === "" || productPrice === "") {
+createTable();
+
+const handleSubmit = () => {
+  if (dropDownItem.value === "" || productPrice.value === "") {
     alert("invalid input");
     return;
   }
-  let priceValue = Number(price.value);
+  priceValue = Number(price.value);
 
   if (imported.checked) {
+    totalInt += priceValue * 0.05;
     priceValue += priceValue * 0.05;
     if (
       dropDownItem.value !== "food" ||
@@ -54,9 +62,8 @@ const handleSubmit = (e) => {
       priceValue += priceValue * 0.1;
     }
   } else {
-    console.log(dropDownItem.value);
     if (dropDownItem.value === "others") {
-      console.log("entered");
+      totalInt += priceValue * 0.1;
       priceValue += priceValue * 0.1;
     }
   }
@@ -66,11 +73,10 @@ const handleSubmit = (e) => {
     price: Math.round(priceValue * 100) / 100,
     imported: imported.checked,
   });
+  totalInt = Math.round(totalInt * 100) / 100;
   localStorage.setItem("data", JSON.stringify(objData));
 
-  for (let x in objData) {
-    createTable(objData[x]);
-  }
+  createTable();
 };
 
 const clearList = () => {
